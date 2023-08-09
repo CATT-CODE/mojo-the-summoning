@@ -32,7 +32,7 @@ describe('Deck', () => {
 })
 
 describe('Deck - Card Association', () => {
-    it('one deck has many card', async () => {  
+    it('one deck has many cards', async () => {  
       let card1 = await Card.create({ name: 'Galadriel', mojo: 10, stamina: 7, imgUrl: 'urlg' });
       let card2 = await Card.create({ name: 'Morphius', mojo: 20, stamina: 5, imgUrl: 'urlm' });
   

@@ -1,5 +1,5 @@
 const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals')
-const { Card } = require('./index')
+const { Card, Attack } = require('./index')
 const { db } = require('../db/config')
 
 // define in global scope
@@ -40,3 +40,23 @@ describe('Card', () => {
     expect(card.imgUrl).toBe('http://localhost:5000/img/nimue-mistral.jpg')
   })
 })
+
+describe('Card - Attack Association', () => {
+    it('one card can have many attacks, one attack can have many cards', async () => {  
+      let card2 = await Card.create({ name: 'Morphius', mojo: 20, stamina: 5, imgUrl: 'urlm' });
+
+      let attack1 = await Attack.create({ title: 'Ice Shard', mojoCost: 10, staminaCost: 1 });
+      let attack2 = await Attack.create({ title: 'Fire Ball', mojoCost: 30, staminaCost: 5 });
+  
+      await card.addAttack(attack1);
+      await card.addAttack(attack2);
+      await card2.addAttack(attack1);
+      await card2.addAttack(attack2);
+  
+      let cardAttacks = await card.getAttacks();
+      expect(cardAttacks.length).toBe(2);
+      
+      let attackCards = await attack2.getCards()
+      expect(attackCards.length).toBe(2);
+    })
+  })
