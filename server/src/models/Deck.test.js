@@ -45,4 +45,13 @@ describe('Deck - Card Association', () => {
       expect(deckCards[0].name).toBe('Galadriel');
       expect(deckCards[1].name).toBe('Morphius');
     })
+
+    it('deck can be loaded with its cards', async () => {
+      let deckCards = await Deck.findOne({
+        where: { name: deck.name },
+        include: Card
+      })  
+      
+      expect(deckCards.Cards.length).toBe(2)
+    })
   })

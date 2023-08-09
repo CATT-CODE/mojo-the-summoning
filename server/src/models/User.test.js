@@ -30,6 +30,12 @@ describe('User - Deck Association', () => {
 
     await user.setDeck(deck)
 
+    let userDeck = await user.getDeck()
+
+    expect(userDeck.name).toBe("LOTR Deck")
+  })
+
+  it('user can be loaded with its deck', async () => {
     let userDeck = await User.findOne({
       where: { username: user.username },
       include: Deck

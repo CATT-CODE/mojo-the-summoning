@@ -59,4 +59,22 @@ describe('Card - Attack Association', () => {
       let attackCards = await attack2.getCards()
       expect(attackCards.length).toBe(2);
     })
+
+    it('card can be loaded with its attacks', async () => {
+        let cardAttacks = await Card.findOne({
+          where: { name: card.name },
+          include: Attack
+        })  
+        
+        expect(cardAttacks.Attacks.length).toBe(2)
+      })
+
+    it('attacks can be loaded with its cards', async () => {
+        let attackCards = await Attack.findOne({
+          where: { title: 'Ice Shard' },
+          include: Card
+        })  
+        
+        expect(attackCards.Cards.length).toBe(2)
+      })
   })
