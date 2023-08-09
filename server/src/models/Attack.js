@@ -1,4 +1,4 @@
-const { db, Model, DataTypes } = require('../db')
+const { db, Model, DataTypes } = require('../db/config')
 
 class Attack extends Model {}
 
