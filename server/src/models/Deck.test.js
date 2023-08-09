@@ -1,5 +1,5 @@
 const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals')
-const { Deck } = require('./index')
+const { Deck, Card } = require('./index')
 const { db } = require('../db/config')
 
 // define in global scope
@@ -29,5 +29,20 @@ describe('Deck', () => {
   it('has xp', () => {
     expect(deck.xp).toBe(0)
   })
-
 })
+
+describe('Deck - Card Association', () => {
+    it('one deck has many card', async () => {  
+      let card1 = await Card.create({ name: 'Galadriel', mojo: 10, stamina: 7, imgUrl: 'urlg' });
+      let card2 = await Card.create({ name: 'Morphius', mojo: 20, stamina: 5, imgUrl: 'urlm' });
+  
+      await deck.addCard(card1);
+      await deck.addCard(card2);
+  
+      let deckCards = await deck.getCards();
+
+      expect(deckCards.length).toBe(2);
+      expect(deckCards[0].name).toBe('Galadriel');
+      expect(deckCards[1].name).toBe('Morphius');
+    })
+  })

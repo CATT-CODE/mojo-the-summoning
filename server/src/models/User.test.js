@@ -1,5 +1,5 @@
 const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals')
-const { User } = require('./index')
+const { User, Deck } = require('./index')
 const { db } = require('../db/config')
 
 // define in global scope
@@ -21,5 +21,20 @@ describe('User', () => {
 
   it('has a username', () => {
     expect(user.username).toBe('gandalf')
+  })
+})
+
+describe('User - Deck Association', () => {
+  it('user has one deck', async () => {
+    let deck = await Deck.create({ name: 'LOTR Deck', xp: 0 })
+
+    await user.setDeck(deck)
+
+    let userDeck = await User.findOne({
+      where: { username: user.username },
+      include: Deck
+    })
+
+    expect(userDeck.Deck.name).toBe('LOTR Deck')
   })
 })
