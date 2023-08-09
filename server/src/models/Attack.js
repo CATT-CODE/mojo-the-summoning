@@ -1,19 +1,27 @@
 const { db, Model, DataTypes } = require('../db/config')
 
-class User extends Model {}
+class Attack extends Model {}
 
-User.init({
+Attack.init({
+    
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    username: {
+    title: {
         type: DataTypes.STRING,
+    },
+    mojoCost: {
+        type: DataTypes.INTEGER
+    },
+    staminaCost: {
+        type: DataTypes.INTEGER
     }
 }, {
     sequelize: db,
-    modelName: 'User'
+    modelName: 'Attack'
 });
 
-module.exports = User;
+module.exports = Attack;
+

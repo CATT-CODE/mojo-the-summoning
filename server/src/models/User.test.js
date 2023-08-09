@@ -1,6 +1,6 @@
 const { describe, it, expect, beforeAll, afterAll } = require('@jest/globals')
-const { User } = require('.')
-const db = require('../db/config')
+const { User, Deck } = require('./index')
+const { db } = require('../db/config')
 
 // define in global scope
 let user
@@ -15,12 +15,32 @@ beforeAll(async () => {
 afterAll(async () => await db.sync({ force: true }))
 
 describe('User', () => {
-  it('has an id', async () => {
+  it('has an id', () => {
     expect(user).toHaveProperty('id')
   })
 
-  /**
-   * Create more tests
-   * E.g. check that the username of the created user is actually gandalf
-   */
+  it('has a username', () => {
+    expect(user.username).toBe('gandalf')
+  })
+})
+
+describe('User - Deck Association', () => {
+  it('user has one deck', async () => {
+    let deck = await Deck.create({ name: 'LOTR Deck', xp: 0 })
+
+    await user.setDeck(deck)
+
+    let userDeck = await user.getDeck()
+
+    expect(userDeck.name).toBe("LOTR Deck")
+  })
+
+  it('user can be loaded with its deck', async () => {
+    let userDeck = await User.findOne({
+      where: { username: user.username },
+      include: Deck
+    })
+
+    expect(userDeck.Deck.name).toBe('LOTR Deck')
+  })
 })
